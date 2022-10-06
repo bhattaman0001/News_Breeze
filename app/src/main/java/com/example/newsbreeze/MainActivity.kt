@@ -1,13 +1,16 @@
 package com.example.newsbreeze
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
+
 
 class MainActivity : AppCompatActivity(), NewsItemClicked {
 
@@ -42,8 +45,7 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
                         newsJSONObject.getString("url"),
                         newsJSONObject.getString("urlToImage"),
                         newsJSONObject.getString("publishedAt"),
-                        newsJSONObject.getString("description"),
-                        newsJSONObject.getString("content")
+                        newsJSONObject.getString("description")
                     )
                     newsArray.add(news)
                 }
@@ -57,9 +59,9 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     }
 
     override fun onItemClicked(item: News) {
-//        intent = Intent(this, DetailedActivity::class.java)
-//        startActivity(intent)
-//        finish()
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(item.url))
     }
 
     fun goToBookMark(view: View) {
