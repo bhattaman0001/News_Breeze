@@ -3,8 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/layout/activity_main.xml" value="0.19384615384615383" />
-        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/layout/item_news.xml" value="0.19384615384615383" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/drawable/back_button.xml" value="0.176" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.1825" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/drawable/ic_outline_bookmark_border_24.xml" value="0.2045" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/layout/activity_book_mark.xml" value="0.1796875" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/layout/activity_detailed.xml" value="0.22" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/NewsBreeze2/app/src/main/res/layout/item_news.xml" value="0.25" />
       </map>
     </option>
   </component>

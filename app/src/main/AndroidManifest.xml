@@ -4,6 +4,7 @@
     package="com.example.newsbreeze">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsBreeze"
         tools:targetApi="31">
+        <activity
+            android:name=".BookMarkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailedActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

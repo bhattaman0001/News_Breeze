@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NewsBreeze</string>
+    <string name="read_full_article">Read Full Article</string>
 </resources>
