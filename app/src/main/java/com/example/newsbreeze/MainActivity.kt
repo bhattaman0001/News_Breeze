@@ -1,31 +1,31 @@
 package com.example.newsbreeze
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
+import com.example.newsbreeze.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity(), NewsItemClicked {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var mAdapter: NewsListAdapter
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         fetchData()
         mAdapter = NewsListAdapter(this)
-        recyclerView.adapter = mAdapter
+        binding.recyclerView.adapter = mAdapter
     }
 
     private fun fetchData() {
@@ -45,26 +45,28 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
                         newsJSONObject.getString("url"),
                         newsJSONObject.getString("urlToImage"),
                         newsJSONObject.getString("publishedAt"),
-                        newsJSONObject.getString("description")
+                        newsJSONObject.getString("description"),
+                        newsJSONObject.getString("content")
                     )
                     newsArray.add(news)
                 }
                 mAdapter.updateNews(newsArray)
             },
             {
-//                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
             }
         )
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
 
-    override fun onItemClicked(item: News) {
-        val builder = CustomTabsIntent.Builder()
-        val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(this, Uri.parse(item.url))
+    fun goToBookMark(view: View) {
+//        val intent = Intent(this, BookMarkActivity::class.java)
+//        intent.putExtra("map", map)
+        Toast.makeText(this, "Bookmarked", Toast.LENGTH_SHORT).show()
+//        finish()
     }
 
-    fun goToBookMark(view: View) {
+    fun goToBookMarkActivity(view: View) {
         startActivity(Intent(this, BookMarkActivity::class.java))
         finish()
     }
