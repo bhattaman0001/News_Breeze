@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/abyssinical"
-        android:text="Author "
+        android:text="Source "
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/author"
         app:layout_constraintHorizontal_bias="0.0"

@@ -46,8 +46,6 @@ class NewsListAdapter(private val context: Context) :
             intent.putExtras(bundle)
             context.startActivity(intent)
         }
-
-
     }
 
     // tells how many items should be on screen at a time
@@ -62,7 +60,6 @@ class NewsListAdapter(private val context: Context) :
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         val ll: ConstraintLayout = itemView.findViewById(R.id.ll)
         val titleView: TextView = itemView.findViewById(R.id.title)
         val image: ImageView = itemView.findViewById(R.id.imageView)

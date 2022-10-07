@@ -4,17 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="16dp"
     tools:context=".DetailedActivity">
 
     <ImageView
         android:id="@+id/imageArticle"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/AuthorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Source "
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toStartOf="@+id/author"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageArticle" />
+
+    <TextView
+        android:id="@+id/author"
+        android:textColor="@color/black"
+        android:layout_marginLeft="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageArticle" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -33,16 +54,16 @@
         android:id="@+id/titleArticle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="19dp"
         android:fontFamily="@font/alkalami_regular"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageArticle"
+        app:layout_constraintTop_toBottomOf="@+id/author"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -50,12 +71,10 @@
         android:layout_width="match_parent"
         android:layout_height="295dp"
         android:layout_below="@id/imageArticle"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:textAlignment="center"
         android:fontFamily="@font/alkalami_regular"
         android:scrollbars="vertical"
+        android:textAlignment="center"
         android:textColor="@color/dark_gray"
         android:textSize="13dp"
         app:layout_constraintBottom_toTopOf="@+id/button"

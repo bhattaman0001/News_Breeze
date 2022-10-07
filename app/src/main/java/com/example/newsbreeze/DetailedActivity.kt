@@ -22,7 +22,8 @@ class DetailedActivity : AppCompatActivity() {
         extras = intent.extras
 
         binding.titleArticle.text = extras?.get("Title").toString()
-        binding.content.text = extras?.get("Desc").toString()
+        binding.content.text = extras?.get("Content").toString()
+        binding.author.text = extras?.get("Author").toString()
         Glide.with(this).load(extras?.get("URL").toString()).into(binding.imageArticle)
         binding.button.setOnClickListener {
             val builder = CustomTabsIntent.Builder()
