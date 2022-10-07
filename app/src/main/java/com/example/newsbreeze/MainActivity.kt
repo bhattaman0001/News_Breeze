@@ -10,7 +10,6 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.example.newsbreeze.databinding.ActivityMainBinding
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mAdapter: NewsListAdapter
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchData() {
-        val url = "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json";
+        val url = "https://saurav.tech/NewsAPI/everything/cnn.json";
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET,
             url,
@@ -68,6 +67,5 @@ class MainActivity : AppCompatActivity() {
 
     fun goToBookMarkActivity(view: View) {
         startActivity(Intent(this, BookMarkActivity::class.java))
-        finish()
     }
 }

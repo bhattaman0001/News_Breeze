@@ -42,9 +42,11 @@ class NewsListAdapter(private val context: Context) :
             bundle.putString("Content", currentItem.content)
             bundle.putString("URL", currentItem.imageUrl)
             bundle.putString("Desc", currentItem.description)
+            bundle.putString("url", currentItem.url)
             intent.putExtras(bundle)
             context.startActivity(intent)
         }
+
 
     }
 
