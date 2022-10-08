@@ -10,34 +10,56 @@
         android:id="@+id/appName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="150dp"
         android:fontFamily="@font/alkalami_regular"
         android:gravity="center"
         android:text="News Breeze"
-        android:layout_marginTop="10dp"
         android:textColor="@color/black"
         android:textSize="30dp"
         app:layout_constraintEnd_toStartOf="@+id/bookMark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="13dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookMark">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="none"
+            android:text="Sort By" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <EditText
         android:id="@+id/search"
-        android:layout_width="match_parent"
-        android:layout_margin="7dp"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:drawableLeft="@drawable/ic_baseline_search_24"
         android:drawablePadding="10dp"
         android:hint="Search"
         android:paddingLeft="10dp"
 
         android:textColorHint="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/appName"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appName" />
 
     <TextView
         android:id="@+id/bookMark"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -46,15 +68,30 @@
         android:text="BookMarks"
         android:textColor="@color/green"
         android:textSize="13dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search" />
+        app:layout_constraintTop_toBottomOf="@+id/search"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

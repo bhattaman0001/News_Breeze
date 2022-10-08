@@ -1,10 +1,13 @@
 package com.example.newsbreeze
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.example.newsbreeze.databinding.ActivityMainBinding
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private lateinit var mAdapter: NewsListAdapter
     private lateinit var binding: ActivityMainBinding
@@ -21,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     // those variables which are initialized after the declaration
     private var newsArray = ArrayList<News>()
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -32,30 +36,60 @@ class MainActivity : AppCompatActivity() {
         mAdapter = NewsListAdapter(this)
         binding.recyclerView.adapter = mAdapter
 
-//        binding.search.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                filter(s.toString())
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//            }
-//        })
+        Spinner()
+
+        binding.search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filter(s.toString().lowercase(Locale.ROOT))
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
+        binding.refreshLayout.setOnRefreshListener {
+            val text = "Sort By"
+            val editable = Editable.Factory.getInstance().newEditable(text)
+            binding.autoCompleteTextView.text = editable
+            Spinner()
+            binding.search.text = null
+            mAdapter.updateNews(newsArray)
+            binding.refreshLayout.isRefreshing = false
+        }
+    }
+
+    private fun Spinner() {
+        val options = arrayOf("sortByDate", "sortByTitle")
+        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.autoCompleteTextView.setAdapter(arrayAdapter)
+        binding.autoCompleteTextView.setOnItemClickListener(this)
     }
 
     private fun filter(text: String) {
         val filteredlist = ArrayList<News>()
         for (i in newsArray) {
-            if (i.author.lowercase(Locale.ROOT).contains(text.lowercase(Locale.getDefault()))) {
-                filteredlist.add(i)
+            var str = ""
+            for (j in i.getTitle().toLowerCase()) {
+                str += j
+                if (str.length <= text.length) {
+                    if (str in text) {
+                        filteredlist.add(i)
+                    }
+                }
             }
+            mAdapter.updateNews(filteredlist)
         }
         if (filteredlist.isEmpty()) {
-            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show()
-        } else {
-            mAdapter.updateNews(filteredlist)
+            mAdapter.updateNews(newsArray)
         }
     }
 
@@ -70,17 +104,17 @@ class MainActivity : AppCompatActivity() {
                 val newsJsonArray = it.getJSONArray("articles")
                 for (i in 0 until newsJsonArray.length()) {
                     val newsJSONObject = newsJsonArray.getJSONObject(i)
-                    val news = News(
-                        newsJSONObject.getString("title"),
-                        newsJSONObject.getString("author"),
-                        newsJSONObject.getString("url"),
-                        newsJSONObject.getString("urlToImage"),
-                        newsJSONObject.getString("publishedAt"),
-                        newsJSONObject.getString("description"),
-                        newsJSONObject.getString("content")
-                    )
+                    val news = News()
+                    news.setTitle(newsJSONObject.getString("title"))
+                    news.setAuthor(newsJSONObject.getString("author"))
+                    news.setUrl(newsJSONObject.getString("url"))
+                    news.setImageUrl(newsJSONObject.getString("urlToImage"))
+                    news.setDate(newsJSONObject.getString("publishedAt"))
+                    news.setDescription(newsJSONObject.getString("description"))
+                    news.setContent(newsJSONObject.getString("content"))
                     newsArray.add(news)
                 }
+                newsArray.distinct().toList()
                 mAdapter.updateNews(newsArray)
             },
             {
@@ -90,14 +124,28 @@ class MainActivity : AppCompatActivity() {
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
 
-    fun goToBookMark(view: View) {
-//        val intent = Intent(this, BookMarkActivity::class.java)
-//        intent.putExtra("map", map)
-        Toast.makeText(this, "Bookmarked", Toast.LENGTH_SHORT).show()
-//        finish()
-    }
-
     fun goToBookMarkActivity(view: View) {
         startActivity(Intent(this, BookMarkActivity::class.java))
+    }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (position) {
+            0 -> {
+                newsArray.sortedBy {
+                    it.getDate()
+                }
+                Toast.makeText(this, "Sort by Date", Toast.LENGTH_SHORT).show()
+                mAdapter.updateNews(newsArray)
+                mAdapter.notifyDataSetChanged()
+            }
+            1 -> {
+                newsArray.sortedBy {
+                    it.getTitle()
+                }
+                Toast.makeText(this, "Sort by Title", Toast.LENGTH_SHORT).show()
+                mAdapter.updateNews(newsArray)
+                mAdapter.notifyDataSetChanged()
+            }
+        }
     }
 }

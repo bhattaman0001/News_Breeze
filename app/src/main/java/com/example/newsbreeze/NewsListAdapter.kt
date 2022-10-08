@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -28,21 +30,34 @@ class NewsListAdapter(private val context: Context) :
     // binds the view with view holder
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = items[position]
-        holder.titleView.text = currentItem.title
-        holder.author.text = currentItem.author
-        holder.date.text = currentItem.date
-        holder.description.text = currentItem.description
-        Glide.with(holder.itemView.context).load(currentItem.imageUrl).into(holder.image)
+        holder.titleView.text = currentItem.getTitle()
+        holder.author.text = currentItem.getAuthor()
+        holder.date.text = currentItem.getDate()
+        holder.description.text = currentItem.getDescription()
+        Glide.with(holder.itemView.context).load(currentItem.getImageUrl()).into(holder.image)
+
+        holder.button.setOnClickListener {
+            val intent = Intent(context, BookMarkActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("Author", currentItem.getAuthor())
+            bundle.putString("Title", currentItem.getTitle())
+            bundle.putString("Content", currentItem.getContent())
+            bundle.putString("URL", currentItem.getImageUrl())
+            bundle.putString("Desc", currentItem.getDescription())
+            bundle.putString("url", currentItem.getUrl())
+            intent.putExtras(bundle)
+            Toast.makeText(context, "Bookmarked", Toast.LENGTH_SHORT).show()
+        }
 
         holder.ll.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
             val bundle = Bundle()
-            bundle.putString("Author", currentItem.author)
-            bundle.putString("Title", currentItem.title)
-            bundle.putString("Content", currentItem.content)
-            bundle.putString("URL", currentItem.imageUrl)
-            bundle.putString("Desc", currentItem.description)
-            bundle.putString("url", currentItem.url)
+            bundle.putString("Author", currentItem.getAuthor())
+            bundle.putString("Title", currentItem.getTitle())
+            bundle.putString("Content", currentItem.getContent())
+            bundle.putString("URL", currentItem.getImageUrl())
+            bundle.putString("Desc", currentItem.getDescription())
+            bundle.putString("url", currentItem.getUrl())
             intent.putExtras(bundle)
             context.startActivity(intent)
         }
@@ -66,10 +81,11 @@ class NewsListAdapter(private val context: Context) :
         val author: TextView = itemView.findViewById(R.id.author)
         val date: TextView = itemView.findViewById(R.id.date)
         val description: TextView = itemView.findViewById(R.id.description)
+        val button: ImageButton = itemView.findViewById(R.id.bookMarkButton)
     }
 }
 
-//interface NewsItemClicked {
-//    fun onItemClicked(item: News)
-//}
+interface NewsItemClicked {
+    fun onItemClicked(item: News)
+}
 
