@@ -1,7 +1,10 @@
-# Specs for NewsBreeze
-* Get the latest breaking news articles and show them in a list <br/>
-* Each article should have an image, title, date and a short description <br/>
-* On clicking on an article, it should show the full article <br/>
-* All items in the list should have a “save to read later” button which saves the articles for reading later in a persistent format until the app is closed. <br/>
-* The breaking news list should have a search by title feature <br/>
-* Save to read later should have a list of all news saved and clicking on them shows the full article. <br/>
+# OverView
+* Fetch the news from api and show it in a list, <br/>
+* Click the news to read full article <br/>
+
+# Feature yet to add
+* Save article using boomark button and show it in bookmark activity, <br/>
+* Room Database for reading the article even without internet <br/>
+
+# ScreenShots
+![alt text](https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104741_NewsBreeze.jpg | width = 500 | height = 500)
