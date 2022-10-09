@@ -25,13 +25,13 @@ class BookMarkActivity : AppCompatActivity() {
 
         extras = intent.extras
         val news = News()
-        news.setTitle(extras?.get("Title").toString())
-        news.setAuthor(extras?.get("Author").toString())
-        news.setUrl(extras?.get("url").toString())
-        news.setImageUrl(extras?.get("URL").toString())
-        news.setDate(extras?.get("date").toString())
-        news.setDescription(extras?.get("Desc").toString())
-        news.setContent(extras?.get("Content").toString())
+        extras?.getString("Title")?.let { news.setTitle(it) }
+        extras?.getString("Author")?.let { news.setAuthor(it) }
+        extras?.getString("url")?.let { news.setUrl(it) }
+        extras?.getString("URL")?.let { news.setImageUrl(it) }
+        extras?.getString("date")?.let { news.setDate(it) }
+        extras?.getString("Desc")?.let { news.setDescription(it) }
+        extras?.getString("Content")?.let { news.setContent(it) }
         newsArray.add(news)
         mAdapter.updateNews(newsArray)
     }

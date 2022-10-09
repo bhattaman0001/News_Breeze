@@ -10,7 +10,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import com.bumptech.glide.Glide
 import com.example.newsbreeze.databinding.ActivityDetailedBinding
 
-
 class DetailedActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailedBinding
@@ -21,7 +20,18 @@ class DetailedActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         extras = intent.extras
-
+        binding.bookMarkButton.setOnClickListener {
+            val intent = Intent(this, BookMarkActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("Author", extras?.getString("Author"))
+            bundle.putString("Title", extras?.getString("Title"))
+            bundle.putString("Content", extras?.getString("Content"))
+            bundle.putString("URL", extras?.getString("URL"))
+            bundle.putString("Desc", extras?.getString("Desc"))
+            bundle.putString("url", extras?.getString("url"))
+            intent.putExtras(bundle)
+            Toast.makeText(this, "Bookmarked", Toast.LENGTH_SHORT).show()
+        }
         binding.titleArticle.text = extras?.get("Title").toString()
         binding.content.text = extras?.get("Content").toString()
         binding.author.text = extras?.get("Author").toString()
@@ -32,18 +42,7 @@ class DetailedActivity : AppCompatActivity() {
             customTabsIntent.launchUrl(this, Uri.parse(extras?.get("url").toString()))
         }
 
-        binding.bookMarkButton.setOnClickListener {
-            val intent = Intent(this, BookMarkActivity::class.java)
-            val bundle = Bundle()
-            bundle.putString("Author", extras?.get("Author").toString())
-            bundle.putString("Title", extras?.get("Title").toString())
-            bundle.putString("Content", extras?.get("Content").toString())
-            bundle.putString("URL", extras?.get("URL").toString())
-            bundle.putString("Desc", extras?.get("Desc").toString())
-            bundle.putString("url", extras?.get("url").toString())
-            intent.putExtras(bundle)
-            Toast.makeText(this, "Bookmarked", Toast.LENGTH_SHORT).show()
-        }
+
     }
 
     fun goToMain(view: View) {
