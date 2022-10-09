@@ -1,11 +1,11 @@
-# OverView 📰
+# OverView and Features 📰
 * Kotlin based application that fetch news from api and show it in a list, <br/>
 * Click the news to read full article <br/>
+* Search article by their title name <br/>
 
 # Feature yet to add
 * Save article using boomark button and show it in bookmark activity, <br/>
 * Room Database for reading the article even without internet <br/>
-* Search article by their title name <br/>
 
 # ScreenShots
 
