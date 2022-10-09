@@ -7,11 +7,12 @@
 * Room Database for reading the article even without internet <br/>
 
 # ScreenShots
+
 <table align="center">
   <tr>
-      <td><img src="https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104741_NewsBreeze.jpg" width="25%" height="25%"></td>
-      <td><img src="https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104754_NewsBreeze.jpg" width="25%" height="25%"></td>
-      <td><img src="https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104759_NewsBreeze.jpg" width="25%" height="25%"></td>
-      <td><img src="https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104814_NewsBreeze.jpg" width="25%" height="25%"></td>
+    <td><img src="https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104741_NewsBreeze.jpg" alt="News home" style="width:200px;height:400px;"></td>
+    <td><img src="https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104754_NewsBreeze.jpg" alt="Read News" style="width:200px;height:400px;"></td>
+    <td><img src="https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104759_NewsBreeze.jpg" alt="saved" style="width:200px;height:400px;"></td>
+    <td><img src="https://github.com/bhattaman0001/News_Breeze/blob/master/Screenshots%20and%20Apk/Screenshot_20221009-104814_NewsBreeze.jpg" alt="saved" style="width:200px;height:400px;"></td>
   </tr>
 </table><br><br>
