@@ -24,7 +24,7 @@ class BookMarkActivity : AppCompatActivity() {
         binding.recyclerViewBookMark.adapter = mAdapter
 
         extras = intent.extras
-        var news = News()
+        val news = News()
         news.setTitle(extras?.get("Title").toString())
         news.setAuthor(extras?.get("Author").toString())
         news.setUrl(extras?.get("url").toString())

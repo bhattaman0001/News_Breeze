@@ -74,16 +74,28 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         binding.autoCompleteTextView.setOnItemClickListener(this)
     }
 
+    private fun isPrefix(a: String, b: String): Boolean {
+        val n: Int = a.length
+        val m: Int = b.length
+        if (n > m) return false
+        var i = 0
+        var j = 0
+        while (i < n && j < m) {
+            if (a[i] != b[j]) return false
+            i++
+            j++
+        }
+        return true
+    }
+
     private fun filter(text: String) {
         val filteredlist = ArrayList<News>()
         for (i in newsArray) {
             var str = ""
-            for (j in i.getTitle().toLowerCase()) {
+            for (j in text.toLowerCase()) {
                 str += j
-                if (str.length <= text.length) {
-                    if (str in text) {
-                        filteredlist.add(i)
-                    }
+                if (isPrefix(str, i.getTitle().toLowerCase())) {
+                    filteredlist.add(i)
                 }
             }
             mAdapter.updateNews(filteredlist)
@@ -94,7 +106,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     }
 
     private fun fetchData() {
-//        val url = "https://saurav.tech/NewsAPI/everything/cnn.json";
         val url = "https://saurav.tech/NewsAPI/everything/bbc-news.json"
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET,
@@ -134,17 +145,17 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
                 newsArray.sortedBy {
                     it.getDate()
                 }
-                Toast.makeText(this, "Sort by Date", Toast.LENGTH_SHORT).show()
                 mAdapter.updateNews(newsArray)
                 mAdapter.notifyDataSetChanged()
+                Toast.makeText(this, "Sort by Date", Toast.LENGTH_SHORT).show()
             }
             1 -> {
                 newsArray.sortedBy {
                     it.getTitle()
                 }
-                Toast.makeText(this, "Sort by Title", Toast.LENGTH_SHORT).show()
                 mAdapter.updateNews(newsArray)
                 mAdapter.notifyDataSetChanged()
+                Toast.makeText(this, "Sort by Title", Toast.LENGTH_SHORT).show()
             }
         }
     }

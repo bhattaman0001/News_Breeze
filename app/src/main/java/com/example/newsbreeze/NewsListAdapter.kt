@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -35,19 +33,6 @@ class NewsListAdapter(private val context: Context) :
         holder.date.text = currentItem.getDate()
         holder.description.text = currentItem.getDescription()
         Glide.with(holder.itemView.context).load(currentItem.getImageUrl()).into(holder.image)
-
-        holder.button.setOnClickListener {
-            val intent = Intent(context, BookMarkActivity::class.java)
-            val bundle = Bundle()
-            bundle.putString("Author", currentItem.getAuthor())
-            bundle.putString("Title", currentItem.getTitle())
-            bundle.putString("Content", currentItem.getContent())
-            bundle.putString("URL", currentItem.getImageUrl())
-            bundle.putString("Desc", currentItem.getDescription())
-            bundle.putString("url", currentItem.getUrl())
-            intent.putExtras(bundle)
-            Toast.makeText(context, "Bookmarked", Toast.LENGTH_SHORT).show()
-        }
 
         holder.ll.setOnClickListener {
             val intent = Intent(context, DetailedActivity::class.java)
@@ -81,7 +66,6 @@ class NewsListAdapter(private val context: Context) :
         val author: TextView = itemView.findViewById(R.id.author)
         val date: TextView = itemView.findViewById(R.id.date)
         val description: TextView = itemView.findViewById(R.id.description)
-        val button: ImageButton = itemView.findViewById(R.id.bookMarkButton)
     }
 }
 

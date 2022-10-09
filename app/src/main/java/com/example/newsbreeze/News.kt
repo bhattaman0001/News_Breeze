@@ -1,12 +1,23 @@
 package com.example.newsbreeze
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+
+@Entity
 class News {
+    @ColumnInfo
     private var title: String = ""
+    @ColumnInfo
     private var content: String = ""
+    @ColumnInfo
     private var imageUrl: String = ""
+    @ColumnInfo
     private var url: String = ""
+    @ColumnInfo
     private var description: String = ""
+    @ColumnInfo
     private var author: String = ""
+    @ColumnInfo
     private var date: String = ""
 
 //    class compareByDate : Comparator<News> {
