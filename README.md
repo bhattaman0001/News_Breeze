@@ -22,6 +22,12 @@
  * Kotlin
  * XML
  * MVVM Architecture
- * Room database library (Yet to implement)
+ * Room database library
  * Android Studio
- * Third party libraries like [Volley](https://google.github.io/volley/), [Glide](https://bumptech.github.io/glide/int/volley.html).
+ * Third party libraries like [Retrofit](https://square.github.io/retrofit/), [Glide](https://bumptech.github.io/glide/int/volley.html).
+ 
+ # Why Retrofit?
+ * Retrofit is type-safe REST client for Android and Java which aims to make it easier to consume RESTful web services.
+ 
+ # What is Room?
+ * Room is an ORM, Object Relational Mapping library. In other words, Room will map our database objects to Java objects. Room provides an abstraction layer over SQLite to allow fluent database access while harnessing the full power of SQLite.
