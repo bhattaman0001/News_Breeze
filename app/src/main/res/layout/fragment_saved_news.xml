@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?android:attr/actionBarSize"
-        android:background="@color/design_default_color_primary"
+        android:background="#94C77D"
         app:theme="@style/Widget.AppCompat.Toolbar" >
 
 
@@ -22,7 +22,7 @@
             android:gravity="center"
             android:textAppearance="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
             android:layout_gravity="start"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textStyle="bold"
             android:theme="@style/TextAppearance.AppCompat.Headline"
 

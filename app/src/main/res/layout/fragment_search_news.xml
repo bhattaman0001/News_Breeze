@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_primary">
+        android:background="#94C77D">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                             android:layout_width="?attr/actionBarSize"
                             android:layout_height="?attr/actionBarSize"
                             android:background="@android:color/transparent"
-                            android:tint="@color/design_default_color_primary"
+                            android:tint="#94C77D"
                             app:srcCompat="@drawable/ic_search" />
 
                         <EditText
@@ -65,7 +65,7 @@
                             android:layout_height="?attr/actionBarSize"
                             android:background="@android:color/transparent"
                             android:clickable="true"
-                            android:tint="@color/design_default_color_primary"
+                            android:tint="#94C77D"
                             app:srcCompat="@drawable/ic_clear" />
 
                     </LinearLayout>
