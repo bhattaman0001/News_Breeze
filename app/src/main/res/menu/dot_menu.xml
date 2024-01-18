@@ -2,8 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/sortBy"
+        android:id="@+id/sort"
         android:icon="@drawable/ic_baseline_sort_24"
-        android:title="Sort News By Date"
-        app:showAsAction="never" />
+        android:title="Sort"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/unSort"
+        android:icon="@drawable/baseline_cancel_24"
+        android:title="Unsort"
+        android:visible="false"
+        app:showAsAction="always" />
 </menu>

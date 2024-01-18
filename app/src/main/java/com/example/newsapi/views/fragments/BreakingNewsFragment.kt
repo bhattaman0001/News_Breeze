@@ -1,14 +1,21 @@
 package com.example.newsapi.views.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,21 +28,31 @@ import com.example.newsapi.util.Resource
 import com.example.newsapi.viewmodels.MainViewModel
 import com.example.newsapi.viewmodels.MainViewModelFactory
 import com.example.newsapi.views.MainActivity
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 
+@Suppress("COMPATIBILITY_WARNING")
 class BreakingNewsFragment : Fragment() {
     lateinit var mainViewModel: MainViewModel
-    lateinit var recyclerView: RecyclerView
-    lateinit var adapter: HeadineAdapter
-    lateinit var progressBar: ProgressBar
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: HeadineAdapter
+    private lateinit var progressBar: ProgressBar
+    private var sort: MenuItem? = null
+    private var unSort: MenuItem? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        setHasOptionsMenu(true)
-
         val view = inflater.inflate(R.layout.fragment_breaking_news, container, false)
+        val toolbar: Toolbar = view.findViewById(R.id.toolbar_top)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         recyclerView = view.findViewById(R.id.rvBreakingNews)
         progressBar = view.findViewById(R.id.paginationProgressBar)
         setUpRecyclerView()
@@ -53,10 +70,10 @@ class BreakingNewsFragment : Fragment() {
         mainViewModel.bNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    hideProgreesBar()
+                    hideProgressBar()
                     response.data?.let { newsResponse ->
                         adapter.differ.submitList(
-                            newsResponse.articles.toList().sortedByDescending { it.publishedAt }
+                            newsResponse.articles.toList()
                         )
                         val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
                         isLastPage = mainViewModel.breakingNewsPageNumber == totalPages
@@ -67,14 +84,14 @@ class BreakingNewsFragment : Fragment() {
                 }
 
                 is Resource.Error -> {
-                    hideProgreesBar()
+                    hideProgressBar()
                     response.message.let {
-                        Toast.makeText(activity, "Error: " + it, Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "Error: $it", Toast.LENGTH_LONG).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    showProgreeBar()
+                    showProgressBar()
                 }
             }
         }
@@ -82,12 +99,12 @@ class BreakingNewsFragment : Fragment() {
         return view
     }
 
-    private fun showProgreeBar() {
+    private fun showProgressBar() {
         progressBar.visibility = View.VISIBLE
         isLoading = true
     }
 
-    private fun hideProgreesBar() {
+    private fun hideProgressBar() {
         progressBar.visibility = View.INVISIBLE
         isLoading = false
     }
@@ -112,7 +129,7 @@ class BreakingNewsFragment : Fragment() {
     var isScrolling = false
     var isLastPage = false
 
-    val scrollListener = object : RecyclerView.OnScrollListener() {
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -128,7 +145,7 @@ class BreakingNewsFragment : Fragment() {
             val shouldPaginate =
                 isNotLoadingandNotonLastPage && isAtLastItem && isNotAtBegining && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                mainViewModel.getbreakingNews("in")
+                mainViewModel.getBreakingNews("in")
                 isScrolling = false
             }
         }
@@ -138,6 +155,97 @@ class BreakingNewsFragment : Fragment() {
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.dot_menu, menu)
+        sort = menu.findItem(R.id.sort)
+        unSort = menu.findItem(R.id.unSort)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.sort -> {
+                mainViewModel.bNews.observe(viewLifecycleOwner) { response ->
+                    when (response) {
+                        is Resource.Success -> {
+                            hideProgressBar()
+                            response.data?.let { newsResponse ->
+                                adapter.differ.submitList(
+                                    newsResponse.articles.toList().sortedBy { it.publishedAt }
+                                )
+                                val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
+                                isLastPage = mainViewModel.breakingNewsPageNumber == totalPages
+                                if (isLastPage) {
+                                    recyclerView.setPadding(0, 0, 0, 0)
+                                }
+                            }
+                            // disabling the sort icon after clicking it and enabling the un-sort icon
+                            sort?.setVisible(false)
+                            unSort?.setVisible(true)
+                            view?.let {
+                                Snackbar.make(it, "News is Sorted", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            hideProgressBar()
+                            response.message.let {
+                                Toast.makeText(activity, "Error: $it", Toast.LENGTH_LONG).show()
+                            }
+                        }
+
+                        is Resource.Loading -> {
+                            showProgressBar()
+                        }
+                    }
+
+                }
+                return true
+            }
+
+            R.id.unSort -> {
+                mainViewModel.bNews.observe(viewLifecycleOwner) { response ->
+                    when (response) {
+                        is Resource.Success -> {
+                            hideProgressBar()
+                            response.data?.let { newsResponse ->
+                                adapter.differ.submitList(
+                                    newsResponse.articles.toList()
+                                )
+                                val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
+                                isLastPage = mainViewModel.breakingNewsPageNumber == totalPages
+                                if (isLastPage) {
+                                    recyclerView.setPadding(0, 0, 0, 0)
+                                }
+                            }
+                            // enabling the sort icon after clicking it and disabling the un-sort icon
+                            sort?.setVisible(true)
+                            unSort?.setVisible(false)
+                            view?.let {
+                                Snackbar.make(it, "News is UnSorted", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            hideProgressBar()
+                            response.message.let {
+                                Toast.makeText(activity, "Error: $it", Toast.LENGTH_LONG).show()
+                            }
+                        }
+
+                        is Resource.Loading -> {
+                            showProgressBar()
+                        }
+                    }
+
+                }
+                return true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

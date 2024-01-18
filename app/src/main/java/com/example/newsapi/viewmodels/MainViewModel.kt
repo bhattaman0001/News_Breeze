@@ -31,20 +31,18 @@ class MainViewModel(
     var breakingNewsResponse: TopHeadLineResponse? = null
 
     init {
-        getbreakingNews("in")
+        getBreakingNews("in")
     }
 
-    fun getbreakingNews(country: String) = viewModelScope.launch {
+    fun getBreakingNews(country: String) = viewModelScope.launch {
         safeBreakingNewsCall(country)
-
     }
 
     fun searchNews(searchQuery: String) = viewModelScope.launch {
-        safeSerachNewsCall(searchQuery)
-
+        safeSearchNewsCall(searchQuery)
     }
 
-    private fun handleSeachNews(response: Response<TopHeadLineResponse>): Resource<TopHeadLineResponse> {
+    private fun handleSearchNews(response: Response<TopHeadLineResponse>): Resource<TopHeadLineResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
@@ -59,13 +57,11 @@ class MainViewModel(
                 breakingNewsPageNumber++
                 if (breakingNewsResponse == null) {
                     breakingNewsResponse = resultResponse
-
                 } else {
                     val oldArticles = breakingNewsResponse?.articles
                     val newArticles = resultResponse.articles
                     oldArticles?.addAll(newArticles)
                 }
-
                 return Resource.Success(breakingNewsResponse ?: resultResponse)
             }
         }
@@ -80,7 +76,6 @@ class MainViewModel(
 
     fun deleteArticle(article: Article) = viewModelScope.launch {
         repository.deleteArticle(article)
-
     }
 
     private suspend fun safeBreakingNewsCall(country: String) {
@@ -95,19 +90,19 @@ class MainViewModel(
 
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> breakingNews.postValue(Resource.Error("Network Failiure"))
+                is IOException -> breakingNews.postValue(Resource.Error("Network Failure"))
                 else -> breakingNews.postValue(Resource.Error("Conversion Error"))
             }
         }
 
     }
 
-    private suspend fun safeSerachNewsCall(searchQuery: String) {
+    private suspend fun safeSearchNewsCall(searchQuery: String) {
         searchNews.postValue(Resource.Loading())
         try {
             if (isOnline()) {
                 val response = repository.searchNews(searchQuery, searchNewsPageNumber)
-                searchNews.postValue(handleSeachNews(response))
+                searchNews.postValue(handleSearchNews(response))
             } else {
                 searchNews.postValue(Resource.Error("No Internet Connection Available"))
             }

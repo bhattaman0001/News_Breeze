@@ -13,11 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsAPI">
-        <activity 
-                  android:name=".views.WebViewActivity"
-                  android:theme="@style/Theme.NewsAPI"
-                  ></activity>
-        <activity android:name=".views.MainActivity">
+        <activity
+            android:name=".views.WebViewActivity"
+            android:theme="@style/Theme.NewsAPI" />
+        <activity android:name=".views.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
