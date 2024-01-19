@@ -15,22 +15,22 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
-    lateinit var headlinesRepository: HeadlinesRepository
-    lateinit var bottomNavigaionView: BottomNavigationView
+    private lateinit var headlinesRepository: HeadlinesRepository
+    lateinit var bottomNavigationView: BottomNavigationView
     override fun onStart() {
         super.onStart()
         headlinesRepository = (application as NewsApplication).repository
         mainViewModel = ViewModelProvider(
             this,
             MainViewModelFactory(application, headlinesRepository)
-        ).get(MainViewModel::class.java)
+        )[MainViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bottomNavigaionView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
         val navController = findNavController(R.id.nav_host_fragment)
-        bottomNavigaionView.setupWithNavController(navController)
+        bottomNavigationView.setupWithNavController(navController)
     }
 }

@@ -13,10 +13,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
-    lateinit var viewModel: MainViewModel
-    val arg: ArticleFragmentArgs by navArgs()
-    lateinit var webView: WebView
-    lateinit var fab: FloatingActionButton
+    private lateinit var viewModel: MainViewModel
+    private val arg: ArticleFragmentArgs by navArgs()
+    private lateinit var webView: WebView
+    private lateinit var fab: FloatingActionButton
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).mainViewModel
@@ -33,11 +33,13 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         }
         fab.setOnClickListener {
             viewModel.saveArticle(article)
-            Snackbar.make(view, "Article Saved Sucessfully", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, "Article Saved Successfully", Snackbar.LENGTH_SHORT)
+                .setAnchorView((activity as MainActivity).bottomNavigationView).show()
         }
     }
 
     private class MyBrowser : WebViewClient() {
+        @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             view.loadUrl(url)
             return true

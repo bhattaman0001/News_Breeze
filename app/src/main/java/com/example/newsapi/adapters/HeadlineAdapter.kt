@@ -15,9 +15,9 @@ import com.example.newsapi.R
 import com.example.newsapi.model.Article
 import com.example.newsapi.views.WebViewActivity
 
-class HeadineAdapter(
+class HeadlineAdapter(
     private val context: Context
-) : RecyclerView.Adapter<HeadineAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<HeadlineAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -66,7 +66,7 @@ class HeadineAdapter(
         var ivArticleImage: ImageView = itemView.findViewById(R.id.ivArticleImage)
     ) : RecyclerView.ViewHolder(itemView)
 
-    private val differcallback = object : DiffUtil.ItemCallback<Article>() {
+    private val differCallBack = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.url == newItem.url
         }
@@ -76,5 +76,5 @@ class HeadineAdapter(
         }
     }
 
-    val differ = AsyncListDiffer(this, differcallback)
+    val differ = AsyncListDiffer(this, differCallBack)
 }

@@ -1,7 +1,6 @@
 package com.example.newsapi.views.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -20,7 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapi.R
-import com.example.newsapi.adapters.HeadineAdapter
+import com.example.newsapi.adapters.HeadlineAdapter
 import com.example.newsapi.db.ArticleDatabase
 import com.example.newsapi.repository.HeadlinesRepository
 import com.example.newsapi.util.Constants.Companion.QUERY_PAGE_SIZE
@@ -28,14 +27,13 @@ import com.example.newsapi.util.Resource
 import com.example.newsapi.viewmodels.MainViewModel
 import com.example.newsapi.viewmodels.MainViewModelFactory
 import com.example.newsapi.views.MainActivity
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
 @Suppress("COMPATIBILITY_WARNING")
 class BreakingNewsFragment : Fragment() {
     lateinit var mainViewModel: MainViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: HeadineAdapter
+    private lateinit var adapter: HeadlineAdapter
     private lateinit var progressBar: ProgressBar
     private var sort: MenuItem? = null
     private var unSort: MenuItem? = null
@@ -111,7 +109,7 @@ class BreakingNewsFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = HeadineAdapter(activity as MainActivity)
+        adapter = HeadlineAdapter(activity as MainActivity)
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(this.scrollListener)
     }
@@ -138,12 +136,12 @@ class BreakingNewsFragment : Fragment() {
             val visibleItemCount = layoutManager.childCount
             val totalItemCount = layoutManager.itemCount
 
-            val isNotLoadingandNotonLastPage = !isLoading && !isLastPage
+            val isNotLoadingAndNotOnLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
-            val isNotAtBegining = firstVisibleItemPosition >= 0
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
             val shouldPaginate =
-                isNotLoadingandNotonLastPage && isAtLastItem && isNotAtBegining && isTotalMoreThanVisible && isScrolling
+                isNotLoadingAndNotOnLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
                 mainViewModel.getBreakingNews("in")
                 isScrolling = false
@@ -186,7 +184,9 @@ class BreakingNewsFragment : Fragment() {
                             sort?.setVisible(false)
                             unSort?.setVisible(true)
                             view?.let {
-                                Snackbar.make(it, "News is Sorted", Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(it, "News is Sorted", Snackbar.LENGTH_SHORT)
+                                    .setAnchorView((activity as MainActivity).bottomNavigationView)
+                                    .show()
                             }
                         }
 
@@ -225,7 +225,9 @@ class BreakingNewsFragment : Fragment() {
                             sort?.setVisible(true)
                             unSort?.setVisible(false)
                             view?.let {
-                                Snackbar.make(it, "News is UnSorted", Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(it, "News is UnSorted", Snackbar.LENGTH_SHORT)
+                                    .setAnchorView((activity as MainActivity).bottomNavigationView)
+                                    .show()
                             }
                         }
 

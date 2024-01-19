@@ -13,18 +13,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapi.R
-import com.example.newsapi.adapters.HeadineAdapter
+import com.example.newsapi.adapters.HeadlineAdapter
 import com.example.newsapi.util.Resource
 import com.example.newsapi.viewmodels.MainViewModel
 import com.example.newsapi.views.MainActivity
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     lateinit var mainViewModel: MainViewModel
     lateinit var recyclerView: RecyclerView
-    lateinit var adapter: HeadineAdapter
+    lateinit var adapter: HeadlineAdapter
     lateinit var progressBar: ProgressBar
     lateinit var etSearch: EditText
     lateinit var layout: RelativeLayout
@@ -36,9 +34,9 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         progressBar = view.findViewById(R.id.paginationProgressBar)
         etSearch = view.findViewById(R.id.etSearch)
         layout = view.findViewById(R.id.emptySearchArticle)
-        val bt_clear = view.findViewById<View>(R.id.bt_clear) as ImageButton
+        val btClear = view.findViewById<View>(R.id.bt_clear) as ImageButton
 
-        bt_clear.setOnClickListener {
+        btClear.setOnClickListener {
             etSearch.setText("")
         }
 
@@ -64,10 +62,10 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
             false
         })
 
-        mainViewModel.searchnews.observe(viewLifecycleOwner, Observer { response ->
+        mainViewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    hideProgreesBar()
+                    hideProgressBar()
                     response.data?.let { newsResponse ->
 
                         if (newsResponse.articles.isEmpty()) {
@@ -83,14 +81,14 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 }
 
                 is Resource.Error -> {
-                    hideProgreesBar()
+                    hideProgressBar()
                     response.message.let {
                         Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    showProgreeBar()
+                    showProgressBar()
                 }
 
             }
@@ -108,13 +106,10 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     private fun searchAction() {
 
-        val query: String = etSearch.getText().toString().trim { it <= ' ' }
-        var job: Job? = null
+        val query: String = etSearch.text.toString().trim { it <= ' ' }
+        val job: Job? = null
         if (query != "") {
             job?.cancel()
-            job = MainScope().launch {
-                mainViewModel.searchNews(query)
-            }
         } else {
             Toast.makeText(activity as MainActivity, "Please fill search input", Toast.LENGTH_SHORT)
                 .show()
@@ -122,17 +117,17 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     }
 
 
-    private fun showProgreeBar() {
+    private fun showProgressBar() {
         progressBar.visibility = View.VISIBLE
     }
 
-    private fun hideProgreesBar() {
+    private fun hideProgressBar() {
         progressBar.visibility = View.INVISIBLE
     }
 
     private fun setUpRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = HeadineAdapter(activity as MainActivity)
+        adapter = HeadlineAdapter(activity as MainActivity)
         recyclerView.adapter = adapter
     }
 

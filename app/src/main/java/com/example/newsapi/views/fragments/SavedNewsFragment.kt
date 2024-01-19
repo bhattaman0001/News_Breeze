@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapi.R
-import com.example.newsapi.adapters.HeadineAdapter
+import com.example.newsapi.adapters.HeadlineAdapter
 import com.example.newsapi.viewmodels.MainViewModel
 import com.example.newsapi.views.MainActivity
 import com.google.android.material.snackbar.Snackbar
@@ -18,9 +18,9 @@ import com.google.android.material.snackbar.Snackbar
 class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     lateinit var mainViewModel: MainViewModel
-    lateinit var recyclerView: RecyclerView
-    lateinit var adapter: HeadineAdapter
-    lateinit var layout: RelativeLayout
+    private lateinit var recyclerView: RecyclerView
+    lateinit var adapter: HeadlineAdapter
+    private lateinit var layout: RelativeLayout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,7 +41,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
         }
 
-        val itemtouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
@@ -57,16 +57,16 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
                 val position = viewHolder.adapterPosition
                 val article = adapter.differ.currentList[position]
                 mainViewModel.deleteArticle(article)
-                Snackbar.make(view, "Sucessfully Deleted article", Snackbar.LENGTH_SHORT).apply {
+                Snackbar.make(view, "Successfully Deleted article", Snackbar.LENGTH_SHORT).apply {
                     setAction("Undo") {
                         mainViewModel.saveArticle(article)
-                    }
+                    }.setAnchorView((activity as MainActivity).bottomNavigationView)
                     show()
                 }
             }
 
         }
-        ItemTouchHelper(itemtouchHelperCallback).apply {
+        ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(recyclerView)
         }
         mainViewModel.getSavedNews().observe(viewLifecycleOwner, Observer { articles ->
@@ -84,7 +84,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     private fun setUpRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = HeadineAdapter(activity as MainActivity)
+        adapter = HeadlineAdapter(activity as MainActivity)
         recyclerView.adapter = adapter
     }
 

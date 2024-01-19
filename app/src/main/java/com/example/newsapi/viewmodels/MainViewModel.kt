@@ -26,9 +26,9 @@ class MainViewModel(
     private val breakingNews: MutableLiveData<Resource<TopHeadLineResponse>> = MutableLiveData()
     var breakingNewsPageNumber = 1
 
-    private val searchNews: MutableLiveData<Resource<TopHeadLineResponse>> = MutableLiveData()
-    var searchNewsPageNumber = 1
-    var breakingNewsResponse: TopHeadLineResponse? = null
+    private val _searchNews: MutableLiveData<Resource<TopHeadLineResponse>> = MutableLiveData()
+    private var searchNewsPageNumber = 1
+    private var breakingNewsResponse: TopHeadLineResponse? = null
 
     init {
         getBreakingNews("in")
@@ -98,52 +98,48 @@ class MainViewModel(
     }
 
     private suspend fun safeSearchNewsCall(searchQuery: String) {
-        searchNews.postValue(Resource.Loading())
+        _searchNews.postValue(Resource.Loading())
         try {
             if (isOnline()) {
                 val response = repository.searchNews(searchQuery, searchNewsPageNumber)
-                searchNews.postValue(handleSearchNews(response))
+                _searchNews.postValue(handleSearchNews(response))
             } else {
-                searchNews.postValue(Resource.Error("No Internet Connection Available"))
+                _searchNews.postValue(Resource.Error("No Internet Connection Available"))
             }
 
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> searchNews.postValue(Resource.Error("Network Failiure"))
-                else -> searchNews.postValue(Resource.Error("Conversion Error"))
+                is IOException -> _searchNews.postValue(Resource.Error("Network Failiure"))
+                else -> _searchNews.postValue(Resource.Error("Conversion Error"))
             }
         }
 
     }
 
-    fun isOnline(): Boolean {
+    private fun isOnline(): Boolean {
         val connectivityManager =
             getApplication<NewsApplication>().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (connectivityManager != null) {
-            val capabilities =
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-                } else {
-                    connectivityManager.activeNetworkInfo?.run {
-                        return when (type) {
-                            TYPE_WIFI -> true
-                            TYPE_MOBILE -> true
-                            TYPE_ETHERNET -> true
-                            else -> false
-                        }
-                    }
+        val capabilities =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) connectivityManager.getNetworkCapabilities(
+                connectivityManager.activeNetwork
+            ) else connectivityManager.activeNetworkInfo?.run {
+                return when (type) {
+                    TYPE_WIFI -> true
+                    TYPE_MOBILE -> true
+                    TYPE_ETHERNET -> true
+                    else -> false
                 }
-            if (capabilities != null) {
-                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
-                    return true
-                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
-                    return true
-                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
-                    return true
-                }
+            }
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                return true
             }
         }
         return false
@@ -151,8 +147,8 @@ class MainViewModel(
 
     val bNews: LiveData<Resource<TopHeadLineResponse>>
         get() = breakingNews
-    val searchnews: LiveData<Resource<TopHeadLineResponse>>
-        get() = searchNews
+    val searchNews: LiveData<Resource<TopHeadLineResponse>>
+        get() = _searchNews
 
 
 }
